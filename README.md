@@ -1,12 +1,12 @@
-# my-expo-app (Template)
+# ✨ expo-app-starter (Template)
 
-Template **Expo + Expo Router** com **TypeScript**, **NativeWind**, UI kit em `src/components/ui`, **React Hook Form + Zod**, **Jest** e **react-native-keyboard-controller**.
+⭐ Um template **Expo + Expo Router** com **TypeScript**, **NativeWind**, UI kit em `src/components/ui`, **React Hook Form + Zod**, **Jest** e **react-native-keyboard-controller**.
 
-Este README explica **como usar a estrutura** e **onde colocar cada tipo de código**, para manter o projeto escalável.
+🎯 Objetivo: um starter **organizado, escalável e fácil de evoluir** — com o `src/app` focado em rotas/telas e o resto do projeto separado por responsabilidades.
 
 ---
 
-## Rodando o projeto
+## 🚀 Rodando o projeto
 
 Instalar dependências:
 
@@ -42,14 +42,14 @@ pnpm test
 
 ---
 
-## Estrutura (atual) e responsabilidades
+## 🧭 Estrutura (atual) e responsabilidades
 
 A ideia principal é: **`src/app` só orquestra tela/rota**.  
 Regra de negócio, estado, validação, chamadas HTTP, etc. ficam fora do `app/`, principalmente em `features/`, `lib/`, `hooks/`.
 
-### Tree (resumo)
+### 🌳 Tree (resumo)
 
-```bash
+```
 src/
   app/
     (auth)/
@@ -76,25 +76,25 @@ src/
 
 ---
 
-## Rotas com Expo Router (`src/app`)
+## 🧩 Rotas com Expo Router (`src/app`)
 
 A pasta `src/app` define rotas por arquivo.
 
-### Grupos (pastas com parênteses)
+### 📦 Grupos (pastas com parênteses)
 
 Pastas como `(auth)`, `(tabs)`, `(onboarding)` são **grupos**: ajudam a organizar, mas **não entram na URL**.
 
-- `(auth)` → telas de autenticação (ex.: `sign-in.tsx`, `sign-up.tsx`)
-- `(tabs)` → telas dentro de Tabs (`inicio`, `buscar`, `perfil`)
-- `(onboarding)` → onboarding do app
+- 🔐 `(auth)` → telas de autenticação (ex.: `sign-in.tsx`, `sign-up.tsx`)
+- 🧭 `(tabs)` → telas dentro de Tabs (`inicio`, `buscar`, `perfil`)
+- 👋 `(onboarding)` → onboarding do app
 
-### Layouts
+### 🧱 Layouts
 
 - `src/app/_layout.tsx` → layout raiz (Stack + providers globais)
 - `src/app/(tabs)/_layout.tsx` → navegação de Tabs
 - `+not-found.tsx` → fallback para rota inexistente
 
-**Boa prática:** tela em `app/` deve ser “fina”:
+✅ **Boa prática:** tela em `app/` deve ser “fina”:
 
 - renderiza UI
 - chama hooks
@@ -103,7 +103,7 @@ Pastas como `(auth)`, `(tabs)`, `(onboarding)` são **grupos**: ajudam a organiz
 
 ---
 
-## UI Kit (`src/components/ui`)
+## 🎨 UI Kit (`src/components/ui`)
 
 Componentes reutilizáveis e “agnósticos” de negócio:
 
@@ -111,56 +111,56 @@ Componentes reutilizáveis e “agnósticos” de negócio:
 
 Eles devem ser:
 
-- altamente reutilizáveis
-- com variantes (via `cva`, se você usar)
-- sem conhecimento de domínio (“auth”, “profile”, etc.)
+- ♻️ altamente reutilizáveis
+- 🧪 com variantes (via `cva`, se você usar)
+- 🧼 sem conhecimento de domínio (“auth”, “profile”, etc.)
 
 ---
 
-## Shared components (`src/components/shared`)
+## 🧱 Shared components (`src/components/shared`)
 
-Componentes reutilizáveis, mas já com alguma intenção de produto (não tão “genéricos” quanto o UI kit).
+Componentes reutilizáveis, mas já com alguma intenção de produto (não tão “genéricos” quanto o UI kit).  
 Ex.: `theme-toggle.tsx`.
 
 ---
 
-## Lib (`src/lib`)
+## 🧰 Lib (`src/lib`)
 
-Utilitários e infra base:
+Infra e utilitários base:
 
 - `theme.ts` → tokens/tema
 - `utils.ts` → helpers (ex.: `cn`)
 
 Aqui é onde você coloca:
 
-- clients (ex.: `http.ts` com fetch/axios)
-- adaptadores (storage, device, env)
-- helpers de formatação (date, currency)
+- 🌐 clients (ex.: `http.ts` com fetch/axios)
+- 🔒 adaptadores (storage, device, env)
+- 🧾 helpers de formatação (date, currency)
 
 ---
 
-## Providers (`src/providers`)
+## 🧩 Providers (`src/providers`)
 
-Providers globais (React Context, wrappers de libs).
+Providers globais (React Context e wrappers de libs).
 
 Ex.: você pode colocar aqui:
 
-- `KeyboardProvider` do `react-native-keyboard-controller`
-- ThemeProvider
-- AuthProvider (se usar context)
-- QueryClientProvider (se usar React Query)
+- ⌨️ `KeyboardProvider` do `react-native-keyboard-controller`
+- 🎨 ThemeProvider
+- 🔐 AuthProvider (se usar context)
+- 🧠 QueryClientProvider (se usar React Query)
 
-Apenas certifique-se de “montar” esses providers no `src/app/_layout.tsx`.
+⚠️ Apenas certifique-se de “montar” esses providers no `src/app/_layout.tsx`.
 
 ---
 
-## Hooks (`src/hooks`) — o que colocar aqui
+## 🪝 Hooks (`src/hooks`) — o que colocar aqui
 
 `hooks/` é para hooks reutilizáveis entre features/telas.
 
-Sugestão de arquivos úteis (o que falta hoje além do `.gitkeep`):
+Sugestão de arquivos úteis (além do `.gitkeep`):
 
-```bash
+```
 src/hooks/
   useDebounce.ts
   useMounted.ts
@@ -177,19 +177,19 @@ Exemplos de responsabilidade:
 
 ---
 
-## Features (`src/features`) — padrão recomendado
+## 🧩 Features (`src/features`) — padrão recomendado
 
 Aqui fica o **domínio**: auth, profile, settings, etc.  
 Cada feature deve encapsular:
 
-- chamadas de API
-- schemas zod
-- store (estado da feature)
-- utils
+- 🌐 chamadas de API
+- ✅ schemas zod
+- 🧠 store (estado da feature)
+- 🧰 utils
 
-Você sugeriu esse formato (ótimo):
+Formato recomendado (o seu exemplo 🔥):
 
-```bash
+```
 src/features/
   auth/
     auth.api.ts
@@ -203,7 +203,7 @@ src/features/
     profile.store.ts
 ```
 
-### Como usar nas telas
+### 🔁 Como usar nas telas
 
 Em `src/app/(auth)/sign-in.tsx`, por exemplo:
 
@@ -212,11 +212,11 @@ Em `src/app/(auth)/sign-in.tsx`, por exemplo:
 - chama `authStore.signIn(...)` (ou `authApi.signIn(...)`)
 - navega ao sucesso
 
-A “regra” aqui é: **feature manda, tela orquestra**.
+⭐ Regra do template: **feature manda, tela orquestra**.
 
 ---
 
-## Constants (`src/constants`)
+## 🧷 Constants (`src/constants`)
 
 Constantes de produto:
 
@@ -227,7 +227,7 @@ Constantes de produto:
 
 Sugestão:
 
-```bash
+```
 src/constants/
   storage.ts
   routes.ts
@@ -236,7 +236,7 @@ src/constants/
 
 ---
 
-## Contexts (`src/contexts`)
+## 🧠 Contexts (`src/contexts`)
 
 Se você tiver contexts “puros” (sem provider específico) ou quiser separar:
 
@@ -247,7 +247,7 @@ Se você já faz isso em `providers/`, pode manter `contexts/` mais leve.
 
 ---
 
-## Types (`src/types`)
+## 🧾 Types (`src/types`)
 
 Tipos globais:
 
@@ -257,7 +257,7 @@ Tipos globais:
 
 Sugestão:
 
-```bash
+```
 src/types/
   api.ts
   navigation.ts
@@ -266,11 +266,11 @@ src/types/
 
 ---
 
-## Teclado (sem KeyboardAvoidingView)
+## ⌨️ Teclado (sem KeyboardAvoidingView)
 
-Esse template usa `react-native-keyboard-controller` para formularios ficarem bons no Android/iOS.
+Esse template usa `react-native-keyboard-controller` para formulários ficarem bons no Android/iOS.
 
-### Provider global
+### 🌍 Provider global
 
 No `src/app/_layout.tsx`, envolva a navegação com `KeyboardProvider`:
 
@@ -287,11 +287,11 @@ export default function RootLayout() {
 }
 ```
 
-### Nas telas com form
+### 🧾 Nas telas com form
 
 Use `KeyboardAwareScrollView` no lugar de `KeyboardAvoidingView`:
 
-```
+```tsx
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 ```
 
@@ -299,7 +299,7 @@ E use `contentContainerStyle` com `flexGrow: 1` para evitar conteúdo saindo da 
 
 ---
 
-## Forms (React Hook Form + Zod)
+## ✅ Forms (React Hook Form + Zod)
 
 Padrão recomendado para RN:
 
@@ -310,7 +310,7 @@ Padrão recomendado para RN:
 
 Exemplo de schema:
 
-```ts
+```tsx
 import { z } from 'zod';
 
 export const SignInSchema = z.object({
@@ -323,7 +323,7 @@ export type SignInValues = z.infer<typeof SignInSchema>;
 
 ---
 
-## Testes (Jest)
+## 🧪 Testes (Jest)
 
 Rodar:
 
@@ -349,35 +349,39 @@ describe('<Inicio />', () => {
 
 ---
 
-## Convenção de “onde colocar o quê”
+## 🗺️ Convenção de “onde colocar o quê”
 
 Se você estiver em dúvida, siga:
 
-- **UI Genérica** → `src/components/ui`
-- **UI Reutilizável com intenção de produto** → `src/components/shared`
-- **Regra de negócio / estado / API** → `src/features/<feature>`
-- **Hooks reutilizáveis** → `src/hooks`
-- **Infra / helpers** → `src/lib`
-- **Providers globais** → `src/providers`
-- **Rotas / telas** → `src/app`
+- 🧱 **UI Genérica** → `src/components/ui`
+- 🧩 **UI Reutilizável com intenção de produto** → `src/components/shared`
+- 🧠 **Regra de negócio / estado / API** → `src/features/<feature>`
+- 🪝 **Hooks reutilizáveis** → `src/hooks`
+- 🧰 **Infra / helpers** → `src/lib`
+- 🌍 **Providers globais** → `src/providers`
+- 🧭 **Rotas / telas** → `src/app`
 
 ---
 
-## Próximos arquivos recomendados (para completar o template)
+## 🧨 Próximos arquivos recomendados (para completar o template)
 
-Se você quiser deixar “pronto pra produção”, eu criaria pelo menos:
+Se você quiser deixar “pronto pra produção”, crie pelo menos:
 
-```bash
+```
 src/lib/http.ts                 // fetch wrapper (baseURL, headers, errors)
 src/lib/storage.ts              // storage wrapper (AsyncStorage/SecureStore)
 src/constants/storage.ts        // chaves
 src/constants/routes.ts         // rotas “oficiais”
 src/types/api.ts                // tipos base de resposta (data/meta/error)
+
 src/hooks/useDebounce.ts
 src/hooks/useMounted.ts
+
 src/features/auth/auth.api.ts
 src/features/auth/auth.schemas.ts
 src/features/auth/auth.store.ts
+src/features/auth/auth.utils.ts
+
 src/features/profile/profile.api.ts
 src/features/profile/profile.schemas.ts
 src/features/profile/profile.store.ts
@@ -385,6 +389,6 @@ src/features/profile/profile.store.ts
 
 ---
 
-## Licença
+## 📄 Licença
 
 Template — ajuste conforme seu uso (MIT/privado/etc.).
