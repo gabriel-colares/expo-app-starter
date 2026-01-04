@@ -2,8 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { Link } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { MoonStarIcon, StarIcon, SunIcon } from 'lucide-react-native';
+import { StarIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import { Image, ImageStyle, View } from 'react-native';
 
