@@ -1,6 +1,6 @@
-# Minimal Template
+# My Expo App
 
-This is a [React Native](https://reactnative.dev/) project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com).
+This is a React Native project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com). It serves as a minimal template for developing cross-platform applications.
 
 It was initialized using the following command:
 
@@ -10,7 +10,7 @@ npx @react-native-reusables/cli@latest init -t my-expo-app
 
 ## Getting Started
 
-To run the development server:
+To run the development server, use one of the following commands:
 
 ```bash
     npm run dev
@@ -28,9 +28,9 @@ This will start the Expo Dev Server. Open the app in:
 - **Android**: press `a` to launch in the Android emulator
 - **Web**: press `w` to run in a browser
 
-You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device. This project fully supports running in Expo Go for quick testing on physical devices.
+You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device for quick testing on physical devices.
 
-## Adding components
+## Adding Components
 
 You can add more reusable components using the CLI:
 
@@ -51,9 +51,29 @@ If you don't specify any component names, you'll be prompted to select which com
 - 🔥 Edge to Edge enabled
 - 📱 Runs on iOS, Android, and Web
 
+- ⚛️ Built with [Expo Router](https://expo.dev/router)
+- 🎨 Styled with [Tailwind CSS](https://tailwindcss.com/) via [Nativewind](https://www.nativewind.dev/)
+- 📦 UI powered by [React Native Reusables](https://github.com/founded-labs/react-native-reusables)
+- 🚀 New Architecture enabled
+- 🔥 Edge to Edge enabled
+- 📱 Runs on iOS, Android, and Web
+
 ## Learn More
 
 To dive deeper into the technologies used:
+
+- [React Native Docs](https://reactnative.dev/docs/getting-started)
+- [Expo Docs](https://docs.expo.dev/)
+- [Nativewind Docs](https://www.nativewind.dev/)
+- [React Native Reusables](https://reactnativereusables.com)
+
+To dive deeper int
+
+The easiest way to deploy your app is with [Expo Application Services (EAS)](https://expo.dev/eas).
+
+- [EAS Build](https://docs.expo.dev/build/introduction/)
+- [EAS Updates](https://docs.expo.dev/eas-update/introduction/)
+- [EAS Submit](https://docs.expo.dev/submit/introduction/)o the technologies used:
 
 - [React Native Docs](https://reactnative.dev/docs/getting-started)
 - [Expo Docs](https://docs.expo.dev/)
