@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Eye, EyeOff, Loader2, Mail, Lock, User, CheckCircle2, XCircle } from 'lucide-react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -52,9 +52,15 @@ function hasErrors(errors) {
   return Boolean(errors.name || errors.email || errors.password);
 }
 
+function FieldError({ message, color }) {
+  if (!message) return null;
+  return <Text style={[styles.fieldError, { color }]}>{message}</Text>;
+}
+
 export default function SignUp() {
   const { colorScheme } = useColorScheme();
-  const palette = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
+  const theme = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
+  const isDark = colorScheme === 'dark';
 
   const [showPassword, setShowPassword] = useState(false);
   const [createdUser, setCreatedUser] = useState(null);
@@ -112,41 +118,47 @@ export default function SignUp() {
   }
 
   return (
-    <View className="flex-1 bg-background">
+    <View style={[styles.screen, { backgroundColor: theme.background }]}>
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         bottomOffset={16}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 24,
-          paddingVertical: 32,
-          justifyContent: 'center',
-        }}>
-        <View className="w-full max-w-md self-center">
-          <Card className="w-full">
-            <CardHeader className="gap-2">
-              <View className="items-center gap-2">
-                <View className="h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
-                  <User color={palette.primary} size={20} />
+        contentContainerStyle={styles.scrollContent}>
+        <View style={styles.contentWrapper}>
+          <Card style={styles.fullWidth}>
+            <CardHeader style={styles.cardHeader}>
+              <View style={styles.headerContent}>
+                <View
+                  style={[
+                    styles.headerIconWrapper,
+                    { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.06)' },
+                  ]}>
+                  <User color={theme.primary} size={20} />
                 </View>
 
-                <View className="items-center">
-                  <CardTitle className="text-2xl">Criar conta</CardTitle>
-                  <CardDescription className="text-center">
+                <View style={styles.centeredItems}>
+                  <CardTitle style={styles.titleText}>Criar conta</CardTitle>
+                  <CardDescription style={styles.centerText}>
                     Preencha os dados abaixo para criar sua conta.
                   </CardDescription>
                 </View>
               </View>
             </CardHeader>
 
-            <CardContent className="gap-4">
+            <CardContent style={styles.cardContent}>
               {createdUser ? (
-                <View className="flex-row items-start gap-2 rounded-md border border-border bg-primary/10 px-3 py-2">
-                  <CheckCircle2 color={palette.primary} size={18} />
-                  <View className="flex-1">
-                    <Text className="text-sm font-medium">Conta criada</Text>
-                    <Text className="text-xs text-muted-foreground">
+                <View
+                  style={[
+                    styles.feedbackCard,
+                    {
+                      borderColor: theme.border,
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.13)' : 'rgba(0,0,0,0.05)',
+                    },
+                  ]}>
+                  <CheckCircle2 color={theme.primary} size={18} />
+                  <View style={styles.flexOne}>
+                    <Text style={styles.bodyStrong}>Conta criada</Text>
+                    <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
                       {createdUser.name} • {createdUser.email}
                     </Text>
                   </View>
@@ -154,18 +166,29 @@ export default function SignUp() {
               ) : null}
 
               {rootError ? (
-                <View className="flex-row items-start gap-2 rounded-md border border-border bg-destructive/10 px-3 py-2">
-                  <XCircle color={palette.destructive} size={18} />
-                  <View className="flex-1">
-                    <Text className="text-sm font-medium text-destructive">Falha no cadastro</Text>
-                    <Text className="text-xs text-muted-foreground">{rootError}</Text>
+                <View
+                  style={[
+                    styles.feedbackCard,
+                    {
+                      borderColor: theme.border,
+                      backgroundColor: isDark ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.1)',
+                    },
+                  ]}>
+                  <XCircle color={theme.destructive} size={18} />
+                  <View style={styles.flexOne}>
+                    <Text style={[styles.bodyStrong, { color: theme.destructive }]}>
+                      Falha no cadastro
+                    </Text>
+                    <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
+                      {rootError}
+                    </Text>
                   </View>
                 </View>
               ) : null}
 
-              <View className="gap-2">
+              <View style={styles.fieldGroup}>
                 <Label nativeID="name">Nome</Label>
-                <View className="relative">
+                <View style={styles.inputWrapper}>
                   <Input
                     aria-labelledby="name"
                     placeholder="Seu nome"
@@ -174,20 +197,23 @@ export default function SignUp() {
                     textContentType="name"
                     value={form.name}
                     onChangeText={(value) => updateField('name', value)}
-                    className="pl-11"
+                    style={styles.inputWithLeftIcon}
                     returnKeyType="next"
                   />
-                  <View className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <User color={palette.mutedForeground} size={18} />
+                  <View style={styles.leftIconContainer}>
+                    <User color={theme.mutedForeground} size={18} />
                   </View>
                 </View>
 
-                <FieldError message={showFieldErrors ? errors.name : undefined} />
+                <FieldError
+                  message={showFieldErrors ? errors.name : undefined}
+                  color={theme.destructive}
+                />
               </View>
 
-              <View className="gap-2">
+              <View style={styles.fieldGroup}>
                 <Label nativeID="email">E-mail</Label>
-                <View className="relative">
+                <View style={styles.inputWrapper}>
                   <Input
                     aria-labelledby="email"
                     placeholder="voce@exemplo.com"
@@ -197,19 +223,22 @@ export default function SignUp() {
                     textContentType="emailAddress"
                     value={form.email}
                     onChangeText={(value) => updateField('email', value)}
-                    className="pl-11"
+                    style={styles.inputWithLeftIcon}
                     returnKeyType="next"
                   />
-                  <View className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <Mail color={palette.mutedForeground} size={18} />
+                  <View style={styles.leftIconContainer}>
+                    <Mail color={theme.mutedForeground} size={18} />
                   </View>
                 </View>
 
-                <FieldError message={showFieldErrors ? errors.email : undefined} />
+                <FieldError
+                  message={showFieldErrors ? errors.email : undefined}
+                  color={theme.destructive}
+                />
               </View>
 
-              <View className="gap-2">
-                <View className="flex-row items-center justify-between">
+              <View style={styles.fieldGroup}>
+                <View style={styles.rowBetween}>
                   <Label nativeID="password">Senha</Label>
 
                   <Pressable
@@ -217,11 +246,11 @@ export default function SignUp() {
                       // TODO: mostrar regras/ajuda (se quiser)
                     }}
                     hitSlop={10}>
-                    <Text className="text-sm text-primary">Dicas de senha</Text>
+                    <Text style={[styles.smallLink, { color: theme.primary }]}>Dicas de senha</Text>
                   </Pressable>
                 </View>
 
-                <View className="relative">
+                <View style={styles.inputWrapper}>
                   <Input
                     aria-labelledby="password"
                     placeholder="Crie uma senha"
@@ -229,70 +258,77 @@ export default function SignUp() {
                     onChangeText={(value) => updateField('password', value)}
                     secureTextEntry={!showPassword}
                     textContentType="newPassword"
-                    className="pl-11 pr-11"
+                    style={styles.inputWithBothIcons}
                     returnKeyType="done"
                     onSubmitEditing={onSubmit}
                   />
 
-                  <View className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <Lock color={palette.mutedForeground} size={18} />
+                  <View style={styles.leftIconContainer}>
+                    <Lock color={theme.mutedForeground} size={18} />
                   </View>
 
                   <Pressable
                     onPress={() => setShowPassword((v) => !v)}
                     hitSlop={10}
-                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                    style={styles.rightIconContainer}
                     accessibilityRole="button"
                     accessibilityLabel={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>
                     {showPassword ? (
-                      <EyeOff color={palette.mutedForeground} size={18} />
+                      <EyeOff color={theme.mutedForeground} size={18} />
                     ) : (
-                      <Eye color={palette.mutedForeground} size={18} />
+                      <Eye color={theme.mutedForeground} size={18} />
                     )}
                   </Pressable>
                 </View>
 
-                <Text className="text-xs text-muted-foreground">
+                <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
                   Use pelo menos 6 caracteres (ideal: 1 número e 1 caractere especial).
                 </Text>
 
-                <FieldError message={showFieldErrors ? errors.password : undefined} />
+                <FieldError
+                  message={showFieldErrors ? errors.password : undefined}
+                  color={theme.destructive}
+                />
               </View>
 
-              <Button className="mt-1 w-full" onPress={onSubmit} disabled={!canSubmit}>
-                <View className="flex-row items-center justify-center gap-2">
-                  {isSubmitting ? <Loader2 className="text-primary-foreground" size={18} /> : null}
-                  <Text className="font-medium">{isSubmitting ? 'Criando…' : 'Criar conta'}</Text>
+              <Button style={styles.submitButton} onPress={onSubmit} disabled={!canSubmit}>
+                <View style={styles.buttonContentRow}>
+                  {isSubmitting ? <Loader2 color={theme.primaryForeground} size={18} /> : null}
+                  <Text style={styles.buttonLabel}>
+                    {isSubmitting ? 'Criando…' : 'Criar conta'}
+                  </Text>
                 </View>
               </Button>
 
-              <View className="my-1 flex-row items-center gap-3">
-                <Separator className="flex-1" />
-                <Text className="text-xs text-muted-foreground">ou</Text>
-                <Separator className="flex-1" />
+              <View style={styles.dividerRow}>
+                <Separator style={styles.flexOne} />
+                <Text style={[styles.captionText, { color: theme.mutedForeground }]}>ou</Text>
+                <Separator style={styles.flexOne} />
               </View>
 
               <Button
                 variant="outline"
-                className="w-full"
+                style={styles.fullWidth}
                 onPress={() => {
                   // TODO: cadastro social (Google/Apple/etc)
                 }}>
-                <Text className="font-medium">Continuar com Google</Text>
+                <Text style={styles.buttonLabel}>Continuar com Google</Text>
               </Button>
             </CardContent>
 
-            <CardFooter className="items-center justify-center">
-              <View className="flex-row items-center gap-2">
-                <Text className="text-sm text-muted-foreground">Já tem conta?</Text>
+            <CardFooter style={styles.cardFooter}>
+              <View style={styles.footerRow}>
+                <Text style={[styles.bodyText, { color: theme.mutedForeground }]}>
+                  Já tem conta?
+                </Text>
                 <Pressable onPress={() => router.push('/(auth)/sign-in')} hitSlop={10}>
-                  <Text className="text-sm font-medium text-primary">Entrar</Text>
+                  <Text style={[styles.bodyStrong, { color: theme.primary }]}>Entrar</Text>
                 </Pressable>
               </View>
             </CardFooter>
           </Card>
 
-          <Text className="mt-3 text-center text-xs text-muted-foreground">
+          <Text style={[styles.legalText, { color: theme.mutedForeground }]}>
             Ao continuar, você concorda com os termos e a política de privacidade.
           </Text>
         </View>
@@ -301,7 +337,149 @@ export default function SignUp() {
   );
 }
 
-function FieldError({ message }) {
-  if (!message) return null;
-  return <Text className="text-xs text-destructive">{message}</Text>;
-}
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 420,
+    alignSelf: 'center',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  cardHeader: {
+    rowGap: 8,
+  },
+  headerContent: {
+    alignItems: 'center',
+    rowGap: 8,
+  },
+  centeredItems: {
+    alignItems: 'center',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  titleText: {
+    fontSize: 24,
+    lineHeight: 30,
+    textAlign: 'center',
+  },
+  headerIconWrapper: {
+    height: 44,
+    width: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 18,
+  },
+  cardContent: {
+    rowGap: 16,
+  },
+  feedbackCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    columnGap: 8,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  flexOne: {
+    flex: 1,
+  },
+  fieldGroup: {
+    rowGap: 8,
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    columnGap: 8,
+  },
+  inputWrapper: {
+    position: 'relative',
+    justifyContent: 'center',
+  },
+  inputWithLeftIcon: {
+    paddingLeft: 44,
+  },
+  inputWithBothIcons: {
+    paddingLeft: 44,
+    paddingRight: 44,
+  },
+  leftIconContainer: {
+    position: 'absolute',
+    left: 12,
+    top: '50%',
+    marginTop: -9,
+  },
+  rightIconContainer: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    marginTop: -9,
+  },
+  submitButton: {
+    marginTop: 4,
+    width: '100%',
+  },
+  buttonContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+  },
+  buttonLabel: {
+    fontWeight: '500',
+  },
+  dividerRow: {
+    marginVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 12,
+  },
+  cardFooter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 8,
+  },
+  bodyText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  bodyStrong: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+  },
+  captionText: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  smallLink: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  fieldError: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  legalText: {
+    marginTop: 12,
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+});

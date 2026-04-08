@@ -4,7 +4,7 @@ import { Text } from '@/components/ui/text';
 import { Link } from 'expo-router';
 import { StarIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-import { Image, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 const LOGO = {
   light: require('@/assets/images/react-native-reusables-light.png'),
@@ -20,17 +20,15 @@ export default function Inicio() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <View className="flex-1 items-center justify-center gap-8 p-4">
+    <View style={styles.screen}>
       <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
-      <View className="gap-2 p-4">
-        <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
+      <View style={styles.instructionsContainer}>
+        <Text style={styles.instructionText}>
           1. Edit <Text variant="code">app/index.jsx</Text> to get started.
         </Text>
-        <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-          2. Save to see your changes instantly.
-        </Text>
+        <Text style={styles.instructionText}>2. Save to see your changes instantly.</Text>
       </View>
-      <View className="flex-row gap-2">
+      <View style={styles.actionsRow}>
         <Link href="https://reactnativereusables.com" asChild>
           <Button>
             <Text>Browse the Docs</Text>
@@ -46,3 +44,25 @@ export default function Inicio() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    rowGap: 32,
+    padding: 16,
+  },
+  instructionsContainer: {
+    rowGap: 8,
+    padding: 16,
+  },
+  instructionText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  actionsRow: {
+    flexDirection: 'row',
+    columnGap: 8,
+  },
+});

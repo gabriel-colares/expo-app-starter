@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Pressable, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { ArrowRight, Sparkles, ShieldCheck, Zap } from 'lucide-react-native';
 
@@ -44,6 +44,7 @@ function clamp(n, min, max) {
 export default function OnboardingScreen() {
   const { colorScheme } = useColorScheme();
   const palette = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
+  const isDark = colorScheme === 'dark';
 
   const [index, setIndex] = useState(0);
   const total = SLIDES.length;
@@ -51,7 +52,6 @@ export default function OnboardingScreen() {
   const slide = SLIDES[index];
 
   const isLast = index === total - 1;
-
   const progress = (index + 1) / total;
 
   function goNext() {
@@ -67,85 +67,105 @@ export default function OnboardingScreen() {
   }
 
   return (
-    <View className="flex-1 bg-background px-6 py-10">
-      <View className="flex-row items-center justify-between">
-        <Text className="text-sm text-muted-foreground">
+    <View style={[styles.screen, { backgroundColor: palette.background }]}>
+      <View style={styles.topRow}>
+        <Text style={[styles.smallMutedText, { color: palette.mutedForeground }]}>
           {index + 1}/{total}
         </Text>
 
         <Pressable onPress={skip} hitSlop={10}>
-          <Text className="text-sm text-primary">Pular</Text>
+          <Text style={[styles.smallLinkText, { color: palette.primary }]}>Pular</Text>
         </Pressable>
       </View>
 
-      <View className="flex-1 items-center justify-center">
-        <View className="w-full max-w-md">
-          <Card className="w-full">
-            <CardHeader className="gap-2">
-              <View className="items-center gap-3">
-                <View className="h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+      <View style={styles.centerArea}>
+        <View style={styles.contentWrapper}>
+          <Card style={styles.fullWidth}>
+            <CardHeader style={styles.cardHeader}>
+              <View style={styles.headerContent}>
+                <View
+                  style={[
+                    styles.slideIconWrapper,
+                    { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.06)' },
+                  ]}>
                   <slide.Icon color={palette.primary} size={28} />
                 </View>
 
-                <View className="items-center">
-                  <CardTitle className="text-2xl">{slide.title}</CardTitle>
-                  <CardDescription className="text-center">{slide.description}</CardDescription>
+                <View style={styles.centeredItems}>
+                  <CardTitle style={styles.titleText}>{slide.title}</CardTitle>
+                  <CardDescription style={styles.centerText}>{slide.description}</CardDescription>
                 </View>
               </View>
             </CardHeader>
 
-            <CardContent className="gap-4">
-              <View className="gap-3">
+            <CardContent style={styles.cardContent}>
+              <View style={styles.progressSection}>
                 <Separator />
 
-                <View className="flex-row items-center justify-between">
-                  <Text className="text-sm text-muted-foreground">Progresso</Text>
-                  <Text className="text-sm">{Math.round(progress * 100)}%</Text>
+                <View style={styles.topRow}>
+                  <Text style={[styles.smallMutedText, { color: palette.mutedForeground }]}>
+                    Progresso
+                  </Text>
+                  <Text style={styles.smallText}>{Math.round(progress * 100)}%</Text>
                 </View>
 
-                <View className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <View
+                  style={[
+                    styles.progressTrack,
+                    { backgroundColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)' },
+                  ]}>
                   <View
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: SCREEN_WIDTH ? `${progress * 100}%` : '0%' }}
+                    style={[
+                      styles.progressFill,
+                      {
+                        width: SCREEN_WIDTH ? `${progress * 100}%` : '0%',
+                        backgroundColor: palette.primary,
+                      },
+                    ]}
                   />
                 </View>
 
-                <View className="flex-row items-center justify-center gap-2 pt-2">
+                <View style={styles.dotsRow}>
                   {SLIDES.map((s, i) => {
                     const active = i === index;
                     return (
                       <View
                         key={s.key}
-                        className={
-                          active
-                            ? 'h-2.5 w-2.5 rounded-full bg-primary'
-                            : 'h-2 w-2 rounded-full bg-muted'
-                        }
+                        style={[
+                          active ? styles.activeDot : styles.inactiveDot,
+                          {
+                            backgroundColor: active
+                              ? palette.primary
+                              : isDark
+                                ? '#4b5563'
+                                : '#d1d5db',
+                          },
+                        ]}
                       />
                     );
                   })}
                 </View>
               </View>
 
-              <Button className="w-full" onPress={goNext}>
-                <View className="flex-row items-center justify-center gap-2">
-                  <Text className="font-medium">{isLast ? 'Começar' : 'Continuar'}</Text>
+              <Button style={styles.fullWidth} onPress={goNext}>
+                <View style={styles.buttonContentRow}>
+                  <Text style={styles.buttonLabel}>{isLast ? 'Começar' : 'Continuar'}</Text>
                   <ArrowRight color={palette.primaryForeground} size={18} />
                 </View>
               </Button>
 
               <Button
                 variant="outline"
-                className="w-full"
+                style={styles.fullWidth}
                 onPress={() => {
                   router.push('/(auth)/sign-up');
                 }}>
-                <Text className="font-medium">Criar conta</Text>
+                <Text style={styles.buttonLabel}>Criar conta</Text>
               </Button>
             </CardContent>
           </Card>
 
-          <Text className="mt-4 text-center text-xs text-muted-foreground">
+          <Text style={[styles.footerTip, { color: palette.mutedForeground }]}>
             Dica: por ser demo, você pode trocar as rotas no final do onboarding sem medo 😄
           </Text>
         </View>
@@ -153,3 +173,113 @@ export default function OnboardingScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 40,
+  },
+  topRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  centerArea: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 420,
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  cardHeader: {
+    rowGap: 8,
+  },
+  headerContent: {
+    alignItems: 'center',
+    rowGap: 12,
+  },
+  slideIconWrapper: {
+    height: 64,
+    width: 64,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  centeredItems: {
+    alignItems: 'center',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  titleText: {
+    fontSize: 24,
+    lineHeight: 30,
+    textAlign: 'center',
+  },
+  cardContent: {
+    rowGap: 16,
+  },
+  progressSection: {
+    rowGap: 12,
+  },
+  smallText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  smallMutedText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  smallLinkText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  progressTrack: {
+    height: 8,
+    width: '100%',
+    borderRadius: 999,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 999,
+  },
+  dotsRow: {
+    paddingTop: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+  },
+  activeDot: {
+    height: 10,
+    width: 10,
+    borderRadius: 999,
+  },
+  inactiveDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 999,
+  },
+  buttonContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+  },
+  buttonLabel: {
+    fontWeight: '500',
+  },
+  footerTip: {
+    marginTop: 16,
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+});

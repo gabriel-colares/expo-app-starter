@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Eye, EyeOff, Loader2, Mail, Lock, CheckCircle2, XCircle } from 'lucide-react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -50,14 +50,15 @@ function hasErrors(errors) {
   return Boolean(errors.email || errors.password);
 }
 
-function FieldError({ message }) {
+function FieldError({ message, color }) {
   if (!message) return null;
-  return <Text className="text-xs text-destructive">{message}</Text>;
+  return <Text style={[styles.fieldError, { color }]}>{message}</Text>;
 }
 
 export default function SignIn() {
   const { colorScheme } = useColorScheme();
   const theme = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
+  const isDark = colorScheme === 'dark';
 
   const [showPassword, setShowPassword] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
@@ -128,55 +129,68 @@ export default function SignIn() {
   }
 
   return (
-    <View className="flex-1 bg-background">
+    <View style={[styles.screen, { backgroundColor: theme.background }]}>
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         bottomOffset={16}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 24,
-          paddingVertical: 32,
-          justifyContent: 'center',
-        }}>
-        <View className="w-full max-w-md self-center">
-          <Card className="w-full">
-            <CardHeader className="gap-2">
-              <View className="items-center gap-2">
-                <View className="h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
+        contentContainerStyle={styles.scrollContent}>
+        <View style={styles.contentWrapper}>
+          <Card style={styles.fullWidth}>
+            <CardHeader style={styles.cardHeader}>
+              <View style={styles.headerContent}>
+                <View
+                  style={[
+                    styles.headerIconWrapper,
+                    { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.06)' },
+                  ]}>
                   <Lock color={theme.primary} size={20} />
                 </View>
 
-                <View className="items-center">
-                  <CardTitle className="text-2xl">Entrar</CardTitle>
-                  <CardDescription className="text-center">
+                <View style={styles.centeredItems}>
+                  <CardTitle style={styles.titleText}>Entrar</CardTitle>
+                  <CardDescription style={styles.centerText}>
                     Use seu e-mail e senha para acessar sua conta.
                   </CardDescription>
                 </View>
               </View>
             </CardHeader>
 
-            <CardContent className="gap-4">
-              <View className="rounded-md border border-border bg-muted/10 px-3 py-2">
-                <View className="flex-row items-center justify-between">
-                  <Text className="text-sm font-medium">Conta demo</Text>
+            <CardContent style={styles.cardContent}>
+              <View
+                style={[
+                  styles.demoCard,
+                  {
+                    borderColor: theme.border,
+                    backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.03)',
+                  },
+                ]}>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.bodyStrong}>Conta demo</Text>
 
-                  <Pressable onPress={fillDemo} hitSlop={10} className="px-2 py-1">
-                    <Text className="text-xs font-medium text-primary">Preencher</Text>
+                  <Pressable onPress={fillDemo} hitSlop={10} style={styles.demoActionButton}>
+                    <Text style={[styles.demoActionText, { color: theme.primary }]}>Preencher</Text>
                   </Pressable>
                 </View>
 
-                <Text className="text-xs text-muted-foreground">
+                <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
                   {MOCK_USER.email} • senha {MOCK_USER.password}
                 </Text>
               </View>
 
               {loggedUser ? (
-                <View className="flex-row items-start gap-2 rounded-md border border-border bg-primary/10 px-3 py-2">
+                <View
+                  style={[
+                    styles.feedbackCard,
+                    {
+                      borderColor: theme.border,
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.13)' : 'rgba(0,0,0,0.05)',
+                    },
+                  ]}>
                   <CheckCircle2 color={theme.primary} size={18} />
-                  <View className="flex-1">
-                    <Text className="text-sm font-medium">Login aprovado</Text>
-                    <Text className="text-xs text-muted-foreground">
+                  <View style={styles.flexOne}>
+                    <Text style={styles.bodyStrong}>Login aprovado</Text>
+                    <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
                       Bem-vindo, {loggedUser.name} ({loggedUser.email})
                     </Text>
                   </View>
@@ -184,19 +198,30 @@ export default function SignIn() {
               ) : null}
 
               {rootError ? (
-                <View className="flex-row items-start gap-2 rounded-md border border-border bg-destructive/10 px-3 py-2">
+                <View
+                  style={[
+                    styles.feedbackCard,
+                    {
+                      borderColor: theme.border,
+                      backgroundColor: isDark ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.1)',
+                    },
+                  ]}>
                   <XCircle color={theme.destructive} size={18} />
-                  <View className="flex-1">
-                    <Text className="text-sm font-medium text-destructive">Falha no login</Text>
-                    <Text className="text-xs text-muted-foreground">{rootError}</Text>
+                  <View style={styles.flexOne}>
+                    <Text style={[styles.bodyStrong, { color: theme.destructive }]}>
+                      Falha no login
+                    </Text>
+                    <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
+                      {rootError}
+                    </Text>
                   </View>
                 </View>
               ) : null}
 
-              <View className="gap-2">
+              <View style={styles.fieldGroup}>
                 <Label nativeID="email">E-mail</Label>
 
-                <View className="relative">
+                <View style={styles.inputWrapper}>
                   <Input
                     aria-labelledby="email"
                     placeholder="voce@exemplo.com"
@@ -206,27 +231,32 @@ export default function SignIn() {
                     textContentType="emailAddress"
                     value={form.email}
                     onChangeText={(value) => updateField('email', value)}
-                    className="pl-11"
+                    style={styles.inputWithLeftIcon}
                     returnKeyType="next"
                   />
-                  <View className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <View style={styles.leftIconContainer}>
                     <Mail color={theme.mutedForeground} size={18} />
                   </View>
                 </View>
 
-                <FieldError message={showFieldErrors ? errors.email : undefined} />
+                <FieldError
+                  message={showFieldErrors ? errors.email : undefined}
+                  color={theme.destructive}
+                />
               </View>
 
-              <View className="gap-2">
-                <View className="flex-row items-center justify-between">
+              <View style={styles.fieldGroup}>
+                <View style={styles.rowBetween}>
                   <Label nativeID="password">Senha</Label>
 
                   <Pressable onPress={() => {}} hitSlop={10}>
-                    <Text className="text-sm text-primary">Esqueci a senha</Text>
+                    <Text style={[styles.smallLink, { color: theme.primary }]}>
+                      Esqueci a senha
+                    </Text>
                   </Pressable>
                 </View>
 
-                <View className="relative">
+                <View style={styles.inputWrapper}>
                   <Input
                     aria-labelledby="password"
                     placeholder="Sua senha"
@@ -234,19 +264,19 @@ export default function SignIn() {
                     onChangeText={(value) => updateField('password', value)}
                     secureTextEntry={!showPassword}
                     textContentType="password"
-                    className="pl-11 pr-11"
+                    style={styles.inputWithBothIcons}
                     returnKeyType="done"
                     onSubmitEditing={onSubmit}
                   />
 
-                  <View className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <View style={styles.leftIconContainer}>
                     <Lock color={theme.mutedForeground} size={18} />
                   </View>
 
                   <Pressable
                     onPress={() => setShowPassword((v) => !v)}
                     hitSlop={10}
-                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                    style={styles.rightIconContainer}
                     accessibilityRole="button"
                     accessibilityLabel={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>
                     {showPassword ? (
@@ -257,42 +287,47 @@ export default function SignIn() {
                   </Pressable>
                 </View>
 
-                <Text className="text-xs text-muted-foreground">
+                <Text style={[styles.captionText, { color: theme.mutedForeground }]}>
                   A senha deve ter pelo menos 6 caracteres.
                 </Text>
 
-                <FieldError message={showFieldErrors ? errors.password : undefined} />
+                <FieldError
+                  message={showFieldErrors ? errors.password : undefined}
+                  color={theme.destructive}
+                />
               </View>
 
-              <Button className="mt-1 w-full" onPress={onSubmit} disabled={!canSubmit}>
-                <View className="flex-row items-center justify-center gap-2">
-                  {isSubmitting ? <Loader2 className="text-primary-foreground" size={18} /> : null}
-                  <Text className="font-medium">{isSubmitting ? 'Entrando…' : 'Entrar'}</Text>
+              <Button style={styles.submitButton} onPress={onSubmit} disabled={!canSubmit}>
+                <View style={styles.buttonContentRow}>
+                  {isSubmitting ? <Loader2 color={theme.primaryForeground} size={18} /> : null}
+                  <Text style={styles.buttonLabel}>{isSubmitting ? 'Entrando…' : 'Entrar'}</Text>
                 </View>
               </Button>
 
-              <View className="my-1 flex-row items-center gap-3">
-                <Separator className="flex-1" />
-                <Text className="text-xs text-muted-foreground">ou</Text>
-                <Separator className="flex-1" />
+              <View style={styles.dividerRow}>
+                <Separator style={styles.flexOne} />
+                <Text style={[styles.captionText, { color: theme.mutedForeground }]}>ou</Text>
+                <Separator style={styles.flexOne} />
               </View>
 
-              <Button variant="outline" className="w-full" onPress={() => {}}>
-                <Text className="font-medium">Continuar com Google</Text>
+              <Button variant="outline" style={styles.fullWidth} onPress={() => {}}>
+                <Text style={styles.buttonLabel}>Continuar com Google</Text>
               </Button>
             </CardContent>
 
-            <CardFooter className="items-center justify-center">
-              <View className="flex-row items-center gap-2">
-                <Text className="text-sm text-muted-foreground">Não tem conta?</Text>
+            <CardFooter style={styles.cardFooter}>
+              <View style={styles.footerRow}>
+                <Text style={[styles.bodyText, { color: theme.mutedForeground }]}>
+                  Não tem conta?
+                </Text>
                 <Pressable onPress={() => router.push('/(auth)/sign-up')} hitSlop={10}>
-                  <Text className="text-sm font-medium text-primary">Criar conta</Text>
+                  <Text style={[styles.bodyStrong, { color: theme.primary }]}>Criar conta</Text>
                 </Pressable>
               </View>
             </CardFooter>
           </Card>
 
-          <Text className="mt-3 text-center text-xs text-muted-foreground">
+          <Text style={[styles.legalText, { color: theme.mutedForeground }]}>
             Ao continuar, você concorda com os termos e a política de privacidade.
           </Text>
         </View>
@@ -300,3 +335,166 @@ export default function SignIn() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 420,
+    alignSelf: 'center',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  cardHeader: {
+    rowGap: 8,
+  },
+  headerContent: {
+    alignItems: 'center',
+    rowGap: 8,
+  },
+  centeredItems: {
+    alignItems: 'center',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  titleText: {
+    fontSize: 24,
+    lineHeight: 30,
+    textAlign: 'center',
+  },
+  headerIconWrapper: {
+    height: 44,
+    width: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 18,
+  },
+  cardContent: {
+    rowGap: 16,
+  },
+  demoCard: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    rowGap: 6,
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    columnGap: 8,
+  },
+  demoActionButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  demoActionText: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '600',
+  },
+  feedbackCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    columnGap: 8,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  flexOne: {
+    flex: 1,
+  },
+  fieldGroup: {
+    rowGap: 8,
+  },
+  inputWrapper: {
+    position: 'relative',
+    justifyContent: 'center',
+  },
+  inputWithLeftIcon: {
+    paddingLeft: 44,
+  },
+  inputWithBothIcons: {
+    paddingLeft: 44,
+    paddingRight: 44,
+  },
+  leftIconContainer: {
+    position: 'absolute',
+    left: 12,
+    top: '50%',
+    marginTop: -9,
+  },
+  rightIconContainer: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    marginTop: -9,
+  },
+  submitButton: {
+    marginTop: 4,
+    width: '100%',
+  },
+  buttonContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+  },
+  buttonLabel: {
+    fontWeight: '500',
+  },
+  dividerRow: {
+    marginVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 12,
+  },
+  cardFooter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 8,
+  },
+  bodyText: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  bodyStrong: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+  },
+  captionText: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  smallLink: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  fieldError: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  legalText: {
+    marginTop: 12,
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+});

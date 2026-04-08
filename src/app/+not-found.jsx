@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { AlertTriangle, Home } from 'lucide-react-native';
 
@@ -12,51 +12,113 @@ import { useColorScheme } from 'nativewind';
 export default function NotFoundScreen() {
   const { colorScheme } = useColorScheme();
   const palette = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
+  const isDark = colorScheme === 'dark';
 
   return (
-    <View className="flex-1 items-center justify-center bg-background px-6 py-10">
-      <View className="w-full max-w-md">
-        <Card className="w-full">
-          <CardHeader className="items-center gap-2">
-            <View className="h-14 w-14 items-center justify-center rounded-2xl bg-destructive/10">
+    <View style={[styles.screen, { backgroundColor: palette.background }]}>
+      <View style={styles.contentWrapper}>
+        <Card style={styles.fullWidth}>
+          <CardHeader style={styles.cardHeader}>
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: isDark ? 'rgba(239,68,68,0.2)' : 'rgba(239,68,68,0.12)' },
+              ]}>
               <AlertTriangle color={palette.destructive} size={26} />
             </View>
 
-            <View className="items-center">
-              <CardTitle className="text-2xl">Página não encontrada</CardTitle>
-              <CardDescription className="text-center">
+            <View style={styles.centeredItems}>
+              <CardTitle style={styles.titleText}>Página não encontrada</CardTitle>
+              <CardDescription style={styles.centerText}>
                 A rota que você tentou acessar não existe ou foi movida.
               </CardDescription>
             </View>
           </CardHeader>
 
-          <CardContent className="gap-3">
+          <CardContent style={styles.cardContent}>
             <Button
-              className="w-full"
+              style={styles.fullWidth}
               onPress={() => {
                 router.replace('/(onboarding)/index');
               }}>
-              <View className="flex-row items-center justify-center gap-2">
+              <View style={styles.buttonContentRow}>
                 <Home color={palette.primaryForeground} size={18} />
-                <Text className="font-medium">Ir para o início</Text>
+                <Text style={styles.buttonLabel}>Ir para o início</Text>
               </View>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full"
+              style={styles.fullWidth}
               onPress={() => {
                 router.back();
               }}>
-              <Text className="font-medium">Voltar</Text>
+              <Text style={styles.buttonLabel}>Voltar</Text>
             </Button>
           </CardContent>
         </Card>
 
-        <Text className="mt-4 text-center text-xs text-muted-foreground">
+        <Text style={[styles.footerText, { color: palette.mutedForeground }]}>
           Se isso continuar acontecendo, verifique suas rotas no expo-router.
         </Text>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 40,
+  },
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 420,
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  cardHeader: {
+    alignItems: 'center',
+    rowGap: 8,
+  },
+  iconContainer: {
+    height: 56,
+    width: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  centeredItems: {
+    alignItems: 'center',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  titleText: {
+    fontSize: 24,
+    lineHeight: 30,
+    textAlign: 'center',
+  },
+  cardContent: {
+    rowGap: 12,
+  },
+  buttonContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+  },
+  buttonLabel: {
+    fontWeight: '500',
+  },
+  footerText: {
+    marginTop: 16,
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+});
