@@ -4,14 +4,14 @@ import { Text } from '@/components/ui/text';
 import { Link } from 'expo-router';
 import { StarIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-import { Image, ImageStyle, View } from 'react-native';
+import { Image, View } from 'react-native';
 
 const LOGO = {
   light: require('@/assets/images/react-native-reusables-light.png'),
   dark: require('@/assets/images/react-native-reusables-dark.png'),
 };
 
-const IMAGE_STYLE: ImageStyle = {
+const IMAGE_STYLE = {
   height: 76,
   width: 76,
 };
@@ -24,7 +24,7 @@ export default function Inicio() {
       <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
       <View className="gap-2 p-4">
         <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-          1. Edit <Text variant="code">app/index.tsx</Text> to get started.
+          1. Edit <Text variant="code">app/index.jsx</Text> to get started.
         </Text>
         <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
           2. Save to see your changes instantly.

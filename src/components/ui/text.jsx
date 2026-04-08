@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import * as Slot from '@rn-primitives/slot';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import * as React from 'react';
-import { Platform, Text as RNText, type Role } from 'react-native';
+import { Platform, Text as RNText } from 'react-native';
 
 const textVariants = cva(
   cn(
@@ -42,38 +42,25 @@ const textVariants = cva(
   }
 );
 
-type TextVariantProps = VariantProps<typeof textVariants>;
-
-type TextVariant = NonNullable<TextVariantProps['variant']>;
-
-const ROLE: Partial<Record<TextVariant, Role>> = {
+const ROLE = {
   h1: 'heading',
   h2: 'heading',
   h3: 'heading',
   h4: 'heading',
-  blockquote: Platform.select({ web: 'blockquote' as Role }),
-  code: Platform.select({ web: 'code' as Role }),
+  blockquote: Platform.select({ web: 'blockquote' }),
+  code: Platform.select({ web: 'code' }),
 };
 
-const ARIA_LEVEL: Partial<Record<TextVariant, string>> = {
+const ARIA_LEVEL = {
   h1: '1',
   h2: '2',
   h3: '3',
   h4: '4',
 };
 
-const TextClassContext = React.createContext<string | undefined>(undefined);
+const TextClassContext = React.createContext(undefined);
 
-function Text({
-  className,
-  asChild = false,
-  variant = 'default',
-  ...props
-}: React.ComponentProps<typeof RNText> &
-  TextVariantProps &
-  React.RefAttributes<RNText> & {
-    asChild?: boolean;
-  }) {
+function Text({ className, asChild = false, variant = 'default', ...props }) {
   const textClass = React.useContext(TextClassContext);
   const Component = asChild ? Slot.Text : RNText;
   return (

@@ -3,10 +3,10 @@
     "*.css": "tailwindcss"
   },
   "tailwindCSS.classAttributes": ["class", "className", "headerClassName"],
-  "[typescript]": {
+  "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[typescriptreact]": {
+  "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {

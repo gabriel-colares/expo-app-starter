@@ -1,12 +1,7 @@
 import { cn } from '@/lib/utils';
 import * as SeparatorPrimitive from '@rn-primitives/separator';
 
-function Separator({
-  className,
-  orientation = 'horizontal',
-  decorative = true,
-  ...props
-}: SeparatorPrimitive.RootProps & React.RefAttributes<SeparatorPrimitive.RootRef>) {
+function Separator({ className, orientation = 'horizontal', decorative = true, ...props }) {
   return (
     <SeparatorPrimitive.Root
       decorative={decorative}

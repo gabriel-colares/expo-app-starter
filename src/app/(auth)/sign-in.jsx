@@ -28,14 +28,12 @@ const SignInSchema = z.object({
   password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres.'),
 });
 
-type SignInValues = z.infer<typeof SignInSchema>;
-
-const MOCK_USER: SignInValues = {
+const MOCK_USER = {
   email: 'demo@venust.app',
   password: '123456',
 };
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ message }) {
   if (!message) return null;
   return <Text className="text-xs text-destructive">{message}</Text>;
 }
@@ -45,7 +43,7 @@ export default function SignIn() {
   const theme = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
 
   const [showPassword, setShowPassword] = useState(false);
-  const [loggedUser, setLoggedUser] = useState<{ email: string; name: string } | null>(null);
+  const [loggedUser, setLoggedUser] = useState(null);
 
   const {
     control,
@@ -54,7 +52,7 @@ export default function SignIn() {
     setError,
     clearErrors,
     formState: { errors, isSubmitting, submitCount },
-  } = useForm<SignInValues>({
+  } = useForm({
     resolver: zodResolver(SignInSchema),
     defaultValues: { email: '', password: '' },
     mode: 'onSubmit',
@@ -86,7 +84,7 @@ export default function SignIn() {
     });
   }
 
-  async function onSubmit(values: SignInValues) {
+  async function onSubmit(values) {
     setLoggedUser(null);
     clearErrors('root');
 

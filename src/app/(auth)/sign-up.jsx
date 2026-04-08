@@ -30,14 +30,12 @@ const SignUpSchema = z.object({
   password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres.'),
 });
 
-type SignUpValues = z.infer<typeof SignUpSchema>;
-
 export default function SignUp() {
   const { colorScheme } = useColorScheme();
   const palette = THEME[colorScheme === 'dark' ? 'dark' : 'light'];
 
   const [showPassword, setShowPassword] = useState(false);
-  const [createdUser, setCreatedUser] = useState<{ name: string; email: string } | null>(null);
+  const [createdUser, setCreatedUser] = useState(null);
 
   const {
     control,
@@ -45,7 +43,7 @@ export default function SignUp() {
     setError,
     clearErrors,
     formState: { errors, isSubmitting, submitCount },
-  } = useForm<SignUpValues>({
+  } = useForm({
     resolver: zodResolver(SignUpSchema),
     defaultValues: { name: '', email: '', password: '' },
     mode: 'onSubmit',
@@ -63,7 +61,7 @@ export default function SignUp() {
 
   const showFieldErrors = submitCount > 0;
 
-  async function onSubmit(values: SignUpValues) {
+  async function onSubmit(values) {
     setCreatedUser(null);
     clearErrors('root');
 
@@ -312,7 +310,7 @@ export default function SignUp() {
   );
 }
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ message }) {
   if (!message) return null;
   return <Text className="text-xs text-destructive">{message}</Text>;
 }

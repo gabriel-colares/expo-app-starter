@@ -1,6 +1,6 @@
 # ✨ expo-app-starter (Template)
 
-⭐ Um template **Expo + Expo Router** com **TypeScript**, **NativeWind**, UI kit em `src/components/ui`, **React Hook Form + Zod**, **Jest** e **react-native-keyboard-controller**.
+⭐ Um template **Expo + Expo Router** com **JavaScript**, **NativeWind**, UI kit em `src/components/ui`, **React Hook Form + Zod**, **Jest** e **react-native-keyboard-controller**.
 
 🎯 Objetivo: um starter **organizado, escalável e fácil de evoluir** — com o `src/app` focado em rotas/telas e o resto do projeto separado por responsabilidades.
 
@@ -55,8 +55,8 @@ src/
     (auth)/
     (onboarding)/
     (tabs)/
-    _layout.tsx
-    +not-found.tsx
+    _layout.jsx
+    +not-found.jsx
 
   assets/
     images/
@@ -84,15 +84,15 @@ A pasta `src/app` define rotas por arquivo.
 
 Pastas como `(auth)`, `(tabs)`, `(onboarding)` são **grupos**: ajudam a organizar, mas **não entram na URL**.
 
-- 🔐 `(auth)` → telas de autenticação (ex.: `sign-in.tsx`, `sign-up.tsx`)
+- 🔐 `(auth)` → telas de autenticação (ex.: `sign-in.jsx`, `sign-up.jsx`)
 - 🧭 `(tabs)` → telas dentro de Tabs (`inicio`, `buscar`, `perfil`)
 - 👋 `(onboarding)` → onboarding do app
 
 ### 🧱 Layouts
 
-- `src/app/_layout.tsx` → layout raiz (Stack + providers globais)
-- `src/app/(tabs)/_layout.tsx` → navegação de Tabs
-- `+not-found.tsx` → fallback para rota inexistente
+- `src/app/_layout.jsx` → layout raiz (Stack + providers globais)
+- `src/app/(tabs)/_layout.jsx` → navegação de Tabs
+- `+not-found.jsx` → fallback para rota inexistente
 
 ✅ **Boa prática:** tela em `app/` deve ser “fina”:
 
@@ -120,7 +120,7 @@ Eles devem ser:
 ## 🧱 Shared components (`src/components/shared`)
 
 Componentes reutilizáveis, mas já com alguma intenção de produto (não tão “genéricos” quanto o UI kit).  
-Ex.: `theme-toggle.tsx`.
+Ex.: `theme-toggle.jsx`.
 
 ---
 
@@ -128,12 +128,12 @@ Ex.: `theme-toggle.tsx`.
 
 Infra e utilitários base:
 
-- `theme.ts` → tokens/tema
-- `utils.ts` → helpers (ex.: `cn`)
+- `theme.js` → tokens/tema
+- `utils.js` → helpers (ex.: `cn`)
 
 Aqui é onde você coloca:
 
-- 🌐 clients (ex.: `http.ts` com fetch/axios)
+- 🌐 clients (ex.: `http.js` com fetch/axios)
 - 🔒 adaptadores (storage, device, env)
 - 🧾 helpers de formatação (date, currency)
 
@@ -150,7 +150,7 @@ Ex.: você pode colocar aqui:
 - 🔐 AuthProvider (se usar context)
 - 🧠 QueryClientProvider (se usar React Query)
 
-⚠️ Apenas certifique-se de “montar” esses providers no `src/app/_layout.tsx`.
+⚠️ Apenas certifique-se de “montar” esses providers no `src/app/_layout.jsx`.
 
 ---
 
@@ -162,11 +162,11 @@ Sugestão de arquivos úteis (além do `.gitkeep`):
 
 ```
 src/hooks/
-  useDebounce.ts
-  useMounted.ts
-  useIsFirstRender.ts
-  useAppState.ts
-  useKeyboard.ts
+  useDebounce.js
+  useMounted.js
+  useIsFirstRender.js
+  useAppState.js
+  useKeyboard.js
 ```
 
 Exemplos de responsabilidade:
@@ -192,20 +192,20 @@ Formato recomendado (o seu exemplo 🔥):
 ```
 src/features/
   auth/
-    auth.api.ts
-    auth.schemas.ts
-    auth.store.ts
-    auth.utils.ts
+    auth.api.js
+    auth.schemas.js
+    auth.store.js
+    auth.utils.js
 
   profile/
-    profile.api.ts
-    profile.schemas.ts
-    profile.store.ts
+    profile.api.js
+    profile.schemas.js
+    profile.store.js
 ```
 
 ### 🔁 Como usar nas telas
 
-Em `src/app/(auth)/sign-in.tsx`, por exemplo:
+Em `src/app/(auth)/sign-in.jsx`, por exemplo:
 
 - tela coleta input (UI)
 - valida com schema (ou usa resolver)
@@ -229,9 +229,9 @@ Sugestão:
 
 ```
 src/constants/
-  storage.ts
-  routes.ts
-  ui.ts
+  storage.js
+  routes.js
+  ui.js
 ```
 
 ---
@@ -240,8 +240,8 @@ src/constants/
 
 Se você tiver contexts “puros” (sem provider específico) ou quiser separar:
 
-- `theme.context.ts`
-- `auth.context.ts`
+- `theme.context.js`
+- `auth.context.js`
 
 Se você já faz isso em `providers/`, pode manter `contexts/` mais leve.
 
@@ -259,9 +259,9 @@ Sugestão:
 
 ```
 src/types/
-  api.ts
-  navigation.ts
-  env.d.ts
+  api.js
+  navigation.js
+  env.js
 ```
 
 ---
@@ -272,9 +272,9 @@ Esse template usa `react-native-keyboard-controller` para formulários ficarem b
 
 ### 🌍 Provider global
 
-No `src/app/_layout.tsx`, envolva a navegação com `KeyboardProvider`:
+No `src/app/_layout.jsx`, envolva a navegação com `KeyboardProvider`:
 
-```tsx
+```jsx
 import { Stack } from 'expo-router';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
@@ -291,7 +291,7 @@ export default function RootLayout() {
 
 Use `KeyboardAwareScrollView` no lugar de `KeyboardAvoidingView`:
 
-```tsx
+```jsx
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 ```
 
@@ -310,7 +310,7 @@ Padrão recomendado para RN:
 
 Exemplo de schema:
 
-```tsx
+```jsx
 import { z } from 'zod';
 
 export const SignInSchema = z.object({
@@ -318,7 +318,10 @@ export const SignInSchema = z.object({
   password: z.string().min(6),
 });
 
-export type SignInValues = z.infer<typeof SignInSchema>;
+export const defaultSignInValues = {
+  email: '',
+  password: '',
+};
 ```
 
 ---
@@ -335,7 +338,7 @@ Você já tem um `transformIgnorePatterns` ajustado para transformar libs que pr
 
 Exemplo simples (padrão “direto” que tende a passar):
 
-```tsx
+```jsx
 import { render } from '@testing-library/react-native';
 import Inicio from '@/app/(tabs)/inicio/index';
 
@@ -368,23 +371,23 @@ Se você estiver em dúvida, siga:
 Se você quiser deixar “pronto pra produção”, crie pelo menos:
 
 ```
-src/lib/http.ts                 // fetch wrapper (baseURL, headers, errors)
-src/lib/storage.ts              // storage wrapper (AsyncStorage/SecureStore)
-src/constants/storage.ts        // chaves
-src/constants/routes.ts         // rotas “oficiais”
-src/types/api.ts                // tipos base de resposta (data/meta/error)
+src/lib/http.js                 // fetch wrapper (baseURL, headers, errors)
+src/lib/storage.js              // storage wrapper (AsyncStorage/SecureStore)
+src/constants/storage.js        // chaves
+src/constants/routes.js         // rotas “oficiais”
+src/types/api.js                // tipos base de resposta (data/meta/error)
 
-src/hooks/useDebounce.ts
-src/hooks/useMounted.ts
+src/hooks/useDebounce.js
+src/hooks/useMounted.js
 
-src/features/auth/auth.api.ts
-src/features/auth/auth.schemas.ts
-src/features/auth/auth.store.ts
-src/features/auth/auth.utils.ts
+src/features/auth/auth.api.js
+src/features/auth/auth.schemas.js
+src/features/auth/auth.store.js
+src/features/auth/auth.utils.js
 
-src/features/profile/profile.api.ts
-src/features/profile/profile.schemas.ts
-src/features/profile/profile.store.ts
+src/features/profile/profile.api.js
+src/features/profile/profile.schemas.js
+src/features/profile/profile.store.js
 ```
 
 ---

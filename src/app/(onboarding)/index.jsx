@@ -13,14 +13,7 @@ import { useColorScheme } from 'nativewind';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-type Slide = {
-  key: string;
-  title: string;
-  description: string;
-  Icon: React.ComponentType<{ size?: number; color?: string }>;
-};
-
-const SLIDES: Slide[] = [
+const SLIDES = [
   {
     key: 'demo',
     title: 'Repo demo, setup rápido',
@@ -44,7 +37,7 @@ const SLIDES: Slide[] = [
   },
 ];
 
-function clamp(n: number, min: number, max: number) {
+function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
 

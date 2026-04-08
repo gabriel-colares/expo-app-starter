@@ -4,7 +4,7 @@ import { render } from '@testing-library/react-native';
 
 import Inicio from '@/app/(tabs)/inicio/index';
 
-function flattenStyle(style: any) {
+function flattenStyle(style) {
   if (!style) return {};
   if (Array.isArray(style)) return Object.assign({}, ...style);
   return style;
@@ -21,8 +21,8 @@ describe('<Inicio />', () => {
   test('renders the instructions (including the code label)', () => {
     const { getByText } = render(<Inicio />);
 
-    // o "app/index.tsx" está em um <Text> aninhado, então é o mais estável pra buscar
-    getByText('app/index.tsx');
+    // o "app/index.jsx" está em um <Text> aninhado, então é o mais estável pra buscar
+    getByText('app/index.jsx');
     getByText('2. Save to see your changes instantly.');
   });
 
