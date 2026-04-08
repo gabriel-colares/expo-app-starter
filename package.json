@@ -38,7 +38,6 @@
     "nativewind": "^4.2.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hook-form": "^7.70.0",
     "react-native": "0.81.5",
     "react-native-keyboard-controller": "1.18.5",
     "react-native-reanimated": "~4.1.1",
@@ -49,12 +48,10 @@
     "react-native-worklets": "0.5.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.14",
-    "tailwindcss-animate": "^1.0.7",
-    "zod": "^4.3.5"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@hookform/resolvers": "^5.2.2",
     "@testing-library/react-native": "^13.3.3",
     "eslint": "^9.39.2",
     "eslint-config-expo": "~10.0.0",

@@ -1,6 +1,6 @@
 # ✨ expo-app-starter (Template)
 
-⭐ Um template **Expo + Expo Router** com **JavaScript**, **NativeWind**, UI kit em `src/components/ui`, **React Hook Form + Zod**, **Jest** e **react-native-keyboard-controller**.
+⭐ Um template **Expo + Expo Router** com **JavaScript**, **NativeWind**, UI kit em `src/components/ui`, **Jest** e **react-native-keyboard-controller**.
 
 🎯 Objetivo: um starter **organizado, escalável e fácil de evoluir** — com o `src/app` focado em rotas/telas e o resto do projeto separado por responsabilidades.
 
@@ -183,7 +183,7 @@ Aqui fica o **domínio**: auth, profile, settings, etc.
 Cada feature deve encapsular:
 
 - 🌐 chamadas de API
-- ✅ schemas zod
+- ✅ regras/schemas de validação
 - 🧠 store (estado da feature)
 - 🧰 utils
 
@@ -299,29 +299,26 @@ E use `contentContainerStyle` com `flexGrow: 1` para evitar conteúdo saindo da 
 
 ---
 
-## ✅ Forms (React Hook Form + Zod)
+## ✅ Forms (validação local)
 
 Padrão recomendado para RN:
 
-- `react-hook-form`
-- `zod`
-- `@hookform/resolvers/zod`
-- `Controller` para inputs RN
+- `useState` para controlar campos
+- funções utilitárias para validar
 
-Exemplo de schema:
+Exemplo de validação simples:
 
 ```jsx
-import { z } from 'zod';
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
 
-export const SignInSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
-export const defaultSignInValues = {
-  email: '',
-  password: '',
-};
+export function validateSignIn(values) {
+  return {
+    email: isValidEmail(values.email.trim()) ? '' : 'Informe um e-mail válido.',
+    password: values.password.length >= 6 ? '' : 'A senha deve ter pelo menos 6 caracteres.',
+  };
+}
 ```
 
 ---

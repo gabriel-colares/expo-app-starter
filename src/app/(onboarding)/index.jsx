@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Dimensions, Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { ArrowRight, Sparkles, ShieldCheck, Zap } from 'lucide-react-native';
@@ -52,9 +52,7 @@ export default function OnboardingScreen() {
 
   const isLast = index === total - 1;
 
-  const progress = useMemo(() => {
-    return (index + 1) / total;
-  }, [index, total]);
+  const progress = (index + 1) / total;
 
   function goNext() {
     if (isLast) {
